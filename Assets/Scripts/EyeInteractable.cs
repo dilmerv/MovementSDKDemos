@@ -8,7 +8,7 @@ public class EyeInteractable : MonoBehaviour
     public bool IsHovered { get; set; }
 
     [SerializeField]
-    private UnityEvent OnObjectHover;
+    private UnityEvent<GameObject> OnObjectHover;
 
     [SerializeField]
     private Material OnHoverActiveMaterial;
@@ -27,7 +27,7 @@ public class EyeInteractable : MonoBehaviour
     {
         if(IsHovered)
         {
-            OnObjectHover?.Invoke();
+            OnObjectHover?.Invoke(gameObject);
             meshRenderer.material = OnHoverActiveMaterial;
         }
         else
