@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d76d5dba59c8a824a8170635648a356c, type: 2}
+  - {fileID: 2100000, guid: d1a5903867c8f0a4a8a94c3fe36dad11, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -130,7 +130,12 @@ MonoBehaviour:
   OnObjectHover:
     m_PersistentCalls:
       m_Calls: []
-  OnHoverActiveMaterial: {fileID: 2100000, guid: 8521b32b7fcd7ae41acc48012ada9ec0,
+  OnObjectSelected:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHoverActiveMaterial: {fileID: 2100000, guid: 5e88a93148f69984e968ecc92408960f,
     type: 2}
-  OnHoverInactiveMaterial: {fileID: 2100000, guid: d76d5dba59c8a824a8170635648a356c,
+  OnSelectedActiveMaterial: {fileID: 2100000, guid: 8521b32b7fcd7ae41acc48012ada9ec0,
+    type: 2}
+  OnPassiveStateMaterial: {fileID: 2100000, guid: 2ab8149ec4775284bada96c1b85b4a09,
     type: 2}

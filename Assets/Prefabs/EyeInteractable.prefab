@@ -142,7 +142,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  OnObjectSelected:
+    m_PersistentCalls:
+      m_Calls: []
   OnHoverActiveMaterial: {fileID: 2100000, guid: d76d5dba59c8a824a8170635648a356c,
     type: 2}
-  OnHoverInactiveMaterial: {fileID: 2100000, guid: 2ab8149ec4775284bada96c1b85b4a09,
+  OnSelectedActiveMaterial: {fileID: 2100000, guid: a4b62a69d54e80347bd546999c6d4b9e,
+    type: 2}
+  OnPassiveStateMaterial: {fileID: 2100000, guid: 2ab8149ec4775284bada96c1b85b4a09,
     type: 2}

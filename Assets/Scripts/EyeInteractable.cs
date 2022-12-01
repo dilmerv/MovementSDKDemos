@@ -46,6 +46,11 @@ public class EyeInteractable : MonoBehaviour
         if(anchor) transform.parent = anchor;
     }
 
+    public void ClearState()
+    {
+        IsHovered = IsSelected = false;
+    }
+
     private void Update()
     {
         if(IsHovered)
@@ -55,7 +60,6 @@ public class EyeInteractable : MonoBehaviour
         }
         else if (IsSelected)
         {
-            IsHovered = false;
             OnObjectSelected?.Invoke(gameObject);
             meshRenderer.material = OnSelectedActiveMaterial;
         }
