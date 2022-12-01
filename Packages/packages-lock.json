@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "com.meta.movement": {
-      "version": "file:C:/Users/dilmer/Code/Unity-Movement",
+      "version": "file:../../Unity-Movement",
       "depth": 0,
       "source": "local",
       "dependencies": {

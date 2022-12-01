@@ -19,6 +19,11 @@ public class EyeTrackingRay : MonoBehaviour
     [SerializeField]
     private Color rayColorHoverState = Color.red;
 
+    [SerializeField]
+    private OVRHand handUsedForPinchSelection;
+
+    private bool allowPinchSelection;
+
     private LineRenderer lineRenderer;
 
     private List<EyeInteractable> eyeInteractables = new List<EyeInteractable>();
@@ -27,6 +32,7 @@ public class EyeTrackingRay : MonoBehaviour
     void Start()
     {
         lineRenderer = GetComponent<LineRenderer>();
+        allowPinchSelection = handUsedForPinchSelection != null;
         SetupRay();
     }
 
@@ -55,12 +61,15 @@ public class EyeTrackingRay : MonoBehaviour
             lineRenderer.endColor = rayColorHoverState;
             var eyeInteractable = hit.transform.GetComponent<EyeInteractable>();
             eyeInteractables.Add(eyeInteractable);
-            eyeInteractable.IsHovered = true;
+            if (allowPinchSelection && handUsedForPinchSelection.GetFingerIsPinching(OVRHand.HandFinger.Index)) {
+                eyeInteractable.Select(true, handUsedForPinchSelection.transform);
+            }
+            else
+                eyeInteractable.Hover(true);
         }
         else
         {
-            lineRenderer.startColor = rayColorDefaultState;
-            lineRenderer.endColor = rayColorDefaultState;
+            lineRenderer.startColor = lineRenderer.endColor = rayColorDefaultState;
             UnSelect(true);
         }
     }
@@ -70,6 +79,7 @@ public class EyeTrackingRay : MonoBehaviour
         foreach (var interactable in eyeInteractables)
         {
             interactable.IsHovered = false;
+            interactable.IsSelected = false;
         }
         if(clear)
             eyeInteractables.Clear();
