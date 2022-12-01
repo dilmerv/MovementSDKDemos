@@ -42,6 +42,7 @@ public class EyeInteractable : MonoBehaviour
 
     public void Select(bool state, Transform anchor = null)
     {
+        if (state) IsHovered = false;
         IsSelected = state;
         if(anchor) transform.parent = anchor;
     }

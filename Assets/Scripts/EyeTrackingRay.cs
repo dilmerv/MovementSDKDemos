@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(LineRenderer))]
@@ -24,15 +23,18 @@ public class EyeTrackingRay : MonoBehaviour
     private OVRHand handUsedForPinchSelection;
 
     [SerializeField]
-    private bool mockPinch;
+    private bool mockHandPinchGesture;
 
     private bool allowPinchSelection;
 
-    private bool rayIntercepting;
+    private bool intercepting;
 
     private LineRenderer lineRenderer;
 
     private Dictionary<int, EyeInteractable> interactables = new Dictionary<int, EyeInteractable>();
+
+    private EyeInteractable lastEyeInteractable;
+
 
     void Start()
     {
@@ -55,62 +57,70 @@ public class EyeTrackingRay : MonoBehaviour
 
     private void Update()
     {
-        if (IsPinching())
-        {
-            lineRenderer.enabled = false;
-        }
-        else
-        {
-            lineRenderer.enabled = true;
-        }
+        lineRenderer.enabled = !IsPinching();
+        
+        SelectionStarted();
 
-        if(!rayIntercepting)
+        // clear all hover selections when no intercepting
+        if (!intercepting)
         {
             lineRenderer.startColor = lineRenderer.endColor = rayColorDefaultState;
             lineRenderer.SetPosition(1, new Vector3(0, 0, transform.position.z + rayDistance));
-            ClearStates();
+            HoverEnded();
         }
+    }
+
+    private void SelectionStarted()
+    {
+        // selection
+        if (IsPinching())
+        {
+            lastEyeInteractable?.Select(true, handUsedForPinchSelection.transform);
+        }
+        else
+            lastEyeInteractable?.Select(false);
     }
 
     void FixedUpdate()
     {
-        RaycastHit hit;
+        if (IsPinching()) return;
+
         Vector3 rayDirection = transform.TransformDirection(Vector3.forward) * rayDistance;
 
         // Check if eye ray intersects with any objects included in the layersToInclude
-        rayIntercepting = Physics.Raycast(transform.position, rayDirection, out hit, Mathf.Infinity, layersToInclude);
-        if (rayIntercepting)
-        {
-            ClearStates();
+        intercepting = Physics.Raycast(transform.position, rayDirection, out RaycastHit hit, Mathf.Infinity, layersToInclude);
 
-            lineRenderer.startColor = rayColorHoverState;
-            lineRenderer.endColor = rayColorHoverState;
-            var eyeInteractable = hit.transform.GetComponent<EyeInteractable>();
+        if (intercepting)
+        {
+            // hover ended
+            HoverEnded();
+
+            lineRenderer.startColor = lineRenderer.endColor = rayColorHoverState;
+
+            // keep a cache of interactables
+            if (!interactables.TryGetValue(hit.transform.gameObject.GetHashCode(), out EyeInteractable eyeInteractable))
+            {
+                eyeInteractable = hit.transform.GetComponent<EyeInteractable>();
+                interactables.Add(hit.transform.gameObject.GetHashCode(), eyeInteractable);
+            }
+
+            // limit line render ray
             var toLocalSpace = transform.InverseTransformPoint(eyeInteractable.transform.position);
             lineRenderer.SetPosition(1, new Vector3(0, 0, toLocalSpace.z));
-            if (!interactables.ContainsKey(eyeInteractable.GetHashCode()))
-            {
-                interactables.Add(eyeInteractable.GetHashCode(), eyeInteractable);
-            }
+
+            // hover started
             eyeInteractable.Hover(true);
+
+            lastEyeInteractable = eyeInteractable;
         }
     }
 
-    private void ClearStates()
+    private void HoverEnded(bool reset = false)
     {
-        foreach (var interactable in interactables)
-        {
-            interactable.Value.Hover(false);
-        }
+        foreach (var interactable in interactables) interactable.Value.Hover(false);
     }
 
-    private void OnDestroy()
-    {
-        interactables.Clear();
-    }
+    private void OnDestroy() => interactables.Clear();
 
-    private bool IsPinching()
-    {
-        return (allowPinchSelection && handUsedForPinchSelection.GetFingerIsPinching(OVRHand.HandFinger.Index)) || mockPinch;
-    }
+    private bool IsPinching() => (allowPinchSelection && handUsedForPinchSelection.GetFingerIsPinching(OVRHand.HandFinger.Index)) || mockHandPinchGesture;
 }
