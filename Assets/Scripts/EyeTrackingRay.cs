@@ -25,10 +25,8 @@ public class EyeTrackingRay : MonoBehaviour
     [SerializeField]
     private bool mockHandPinchGesture;
 
-    [SerializeField]
     private bool intercepting;
 
-    [SerializeField]
     private bool allowPinchSelection;
 
     private LineRenderer lineRenderer;
