@@ -35,7 +35,7 @@ public class EyeTrackingRay : MonoBehaviour
 
     private EyeInteractable lastEyeInteractable;
 
-    void Start()
+    private void Start()
     {
         lineRenderer = GetComponent<LineRenderer>();
         allowPinchSelection = handUsedForPinchSelection != null;
@@ -82,7 +82,7 @@ public class EyeTrackingRay : MonoBehaviour
         }
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         if (IsPinching()) return;
 

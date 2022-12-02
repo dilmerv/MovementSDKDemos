@@ -7,9 +7,6 @@ using UnityEngine.Events;
 public class EyeInteractable : MonoBehaviour
 {
     [field: SerializeField]
-    public bool IsLocked { get; private set; }
-
-    [field: SerializeField]
     public bool IsHovered { get; private set; }
 
     [field: SerializeField]
@@ -55,28 +52,23 @@ public class EyeInteractable : MonoBehaviour
         if(!IsSelected) transform.SetParent(originalAnchor);
     }
 
-    public void ClearState()
-    {
-        IsHovered = IsSelected = false;
-    }
-
     private void Update()
     {
         if(IsHovered)
         {
             OnObjectHover?.Invoke(gameObject);
-            if (meshRenderer) meshRenderer.material = OnHoverActiveMaterial;
+            meshRenderer.material = OnHoverActiveMaterial;
             if (statusText) statusText.text = "<color=\"yellow\">HOVERED</color>";
         }
         if (IsSelected)
         {
             OnObjectSelected?.Invoke(gameObject);
-            if (meshRenderer) meshRenderer.material = OnSelectedActiveMaterial;
+            meshRenderer.material = OnSelectedActiveMaterial;
             if (statusText) statusText.text = "<color=\"green\">SELECTED</color>";
         }
         if (!IsHovered && !IsSelected)
         {
-            if (meshRenderer) meshRenderer.material = OnPassiveStateMaterial;
+            meshRenderer.material = OnPassiveStateMaterial;
             if (statusText) statusText.text = "<color=\"grey\">IDLE</color>";
         }
     }
