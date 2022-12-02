@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -5,6 +6,9 @@ using UnityEngine.Events;
 [RequireComponent(typeof(Rigidbody))]
 public class EyeInteractable : MonoBehaviour
 {
+    [field: SerializeField]
+    public bool IsLocked { get; private set; }
+
     [field: SerializeField]
     public bool IsHovered { get; private set; }
 
@@ -30,23 +34,25 @@ public class EyeInteractable : MonoBehaviour
 
     private Transform originalAnchor;
 
+    private TextMeshPro statusText;
+
     private void Start()
     {
         meshRenderer = GetComponent<MeshRenderer>();
+        statusText = GetComponentInChildren<TextMeshPro>();
         originalAnchor = transform.parent;
     }
 
     public void Hover(bool state)
     {
         IsHovered = state;
-        transform.parent = originalAnchor;
     }
 
     public void Select(bool state, Transform anchor = null)
     {
-        //if (state) IsHovered = false;
         IsSelected = state;
-        if(anchor) transform.parent = anchor;
+        if(anchor) transform.SetParent(anchor);
+        if(!IsSelected) transform.SetParent(originalAnchor);
     }
 
     public void ClearState()
@@ -59,14 +65,19 @@ public class EyeInteractable : MonoBehaviour
         if(IsHovered)
         {
             OnObjectHover?.Invoke(gameObject);
-            meshRenderer.material = OnHoverActiveMaterial;
+            if (meshRenderer) meshRenderer.material = OnHoverActiveMaterial;
+            if (statusText) statusText.text = "<color=\"yellow\">HOVERED</color>";
         }
         if (IsSelected)
         {
             OnObjectSelected?.Invoke(gameObject);
-            meshRenderer.material = OnSelectedActiveMaterial;
+            if (meshRenderer) meshRenderer.material = OnSelectedActiveMaterial;
+            if (statusText) statusText.text = "<color=\"green\">SELECTED</color>";
         }
         if (!IsHovered && !IsSelected)
-            meshRenderer.material = OnPassiveStateMaterial;
+        {
+            if (meshRenderer) meshRenderer.material = OnPassiveStateMaterial;
+            if (statusText) statusText.text = "<color=\"grey\">IDLE</color>";
+        }
     }
 }

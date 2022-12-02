@@ -26,9 +26,6 @@ public class EyeTrackingRay : MonoBehaviour
     private bool mockHandPinchGesture;
 
     [SerializeField]
-    private bool pinchingInProgress;
-
-    [SerializeField]
     private bool intercepting;
 
     [SerializeField]
@@ -78,13 +75,11 @@ public class EyeTrackingRay : MonoBehaviour
     {
         if (IsPinching())
         {
-            pinchingInProgress = true;
             lastEyeInteractable?.Select(true, handUsedForPinchSelection.IsTracked ? 
                 handUsedForPinchSelection.transform : transform);
         }
         else
         {
-            pinchingInProgress = false;
             lastEyeInteractable?.Select(false);
         }
     }
