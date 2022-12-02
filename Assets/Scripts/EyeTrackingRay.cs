@@ -25,16 +25,20 @@ public class EyeTrackingRay : MonoBehaviour
     [SerializeField]
     private bool mockHandPinchGesture;
 
-    private bool allowPinchSelection;
+    [SerializeField]
+    private bool pinchingInProgress;
 
+    [SerializeField]
     private bool intercepting;
+
+    [SerializeField]
+    private bool allowPinchSelection;
 
     private LineRenderer lineRenderer;
 
     private Dictionary<int, EyeInteractable> interactables = new Dictionary<int, EyeInteractable>();
 
     private EyeInteractable lastEyeInteractable;
-
 
     void Start()
     {
@@ -72,13 +76,17 @@ public class EyeTrackingRay : MonoBehaviour
 
     private void SelectionStarted()
     {
-        // selection
         if (IsPinching())
         {
-            lastEyeInteractable?.Select(true, handUsedForPinchSelection.transform);
+            pinchingInProgress = true;
+            lastEyeInteractable?.Select(true, handUsedForPinchSelection.IsTracked ? 
+                handUsedForPinchSelection.transform : transform);
         }
         else
+        {
+            pinchingInProgress = false;
             lastEyeInteractable?.Select(false);
+        }
     }
 
     void FixedUpdate()

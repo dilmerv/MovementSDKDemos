@@ -261,6 +261,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c67a36c1578f3ec459d6749de8ad69dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &296353723 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4042673220648894827, guid: d93b7e04b48cd7b4fa849695dba2ce9c,
+    type: 3}
+  m_PrefabInstance: {fileID: 1969993894}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb7623a8f0b49cf4dbaa40aea4d4be64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -2754,7 +2766,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1979502269, guid: b9113666781e2af41a887228a9593e4f, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1979502269, guid: b9113666781e2af41a887228a9593e4f, type: 3}
       propertyPath: rayDistance
@@ -2767,7 +2779,7 @@ PrefabInstance:
     - target: {fileID: 1979502269, guid: b9113666781e2af41a887228a9593e4f, type: 3}
       propertyPath: handUsedForPinchSelection
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 296353723}
     - target: {fileID: 4610495808869167698, guid: b9113666781e2af41a887228a9593e4f,
         type: 3}
       propertyPath: ReferenceFrame

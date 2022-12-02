@@ -5,8 +5,10 @@ using UnityEngine.Events;
 [RequireComponent(typeof(Rigidbody))]
 public class EyeInteractable : MonoBehaviour
 {
+    [field: SerializeField]
     public bool IsHovered { get; private set; }
 
+    [field: SerializeField]
     public bool IsSelected { get; private set; }
 
     [SerializeField]
@@ -42,7 +44,7 @@ public class EyeInteractable : MonoBehaviour
 
     public void Select(bool state, Transform anchor = null)
     {
-        if (state) IsHovered = false;
+        //if (state) IsHovered = false;
         IsSelected = state;
         if(anchor) transform.parent = anchor;
     }
@@ -59,12 +61,12 @@ public class EyeInteractable : MonoBehaviour
             OnObjectHover?.Invoke(gameObject);
             meshRenderer.material = OnHoverActiveMaterial;
         }
-        else if (IsSelected)
+        if (IsSelected)
         {
             OnObjectSelected?.Invoke(gameObject);
             meshRenderer.material = OnSelectedActiveMaterial;
         }
-        else
+        if (!IsHovered && !IsSelected)
             meshRenderer.material = OnPassiveStateMaterial;
     }
 }
